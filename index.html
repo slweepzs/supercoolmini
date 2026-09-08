@@ -9,7 +9,12 @@
       --primary-color: #4a90e2;
       --highlight-color: #a4c2f4;
       --cell-highlight: #d9e1f2;
-      --border-color: #333;
+      --border-color: #222;
+      --black-square-bg: #1e242b;
+      --correct-color: #2e7d32;
+      --correct-bg: #e8f5e9;
+      --wrong-color: #c62828;
+      --wrong-bg: #ffebee;
       --grid-size: 5;
     }
 
@@ -48,6 +53,8 @@
       font-size: 1rem;
       border-radius: 4px;
       border: 1px solid #ccc;
+      background-color: white;
+      cursor: pointer;
     }
 
     .timer {
@@ -73,14 +80,16 @@
       }
     }
 
+    /* Grid Styling */
     .grid {
       display: grid;
       grid-template-columns: repeat(var(--grid-size), 50px);
       grid-template-rows: repeat(var(--grid-size), 50px);
       gap: 2px;
       background-color: var(--border-color);
-      border: 2px solid var(--border-color);
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      border: 3px solid var(--border-color);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+      border-radius: 4px;
     }
 
     .cell {
@@ -94,11 +103,17 @@
       text-transform: uppercase;
       user-select: none;
       cursor: pointer;
+      transition: background-color 0.15s ease;
     }
 
+    /* High Visibility Black Squares */
     .cell.black {
-      background-color: var(--border-color);
+      background-color: var(--black-square-bg);
+      background-image: linear-gradient(135deg, #111418 25%, transparent 25%, transparent 50%, #111418 50%, #111418 75%, transparent 75%, transparent);
+      background-size: 8px 8px;
+      border: 1px solid #111;
       cursor: default;
+      box-shadow: inset 0 0 5px rgba(0,0,0,0.5);
     }
 
     .cell.highlighted {
@@ -107,6 +122,27 @@
 
     .cell.active {
       background-color: var(--highlight-color);
+    }
+
+    /* Checking Feedback States */
+    .cell.correct {
+      background-color: var(--correct-bg) !important;
+      color: var(--correct-color);
+    }
+
+    .cell.correct::after {
+      content: '✓';
+      position: absolute;
+      bottom: 2px;
+      right: 3px;
+      font-size: 0.65rem;
+      color: var(--correct-color);
+    }
+
+    .cell.incorrect {
+      background-color: var(--wrong-bg) !important;
+      color: var(--wrong-color);
+      text-decoration: line-through;
     }
 
     .cell-number {
@@ -154,10 +190,12 @@
       font-weight: bold;
     }
 
+    /* Controls & Dropdown Menu */
     .controls {
       margin-top: 20px;
       display: flex;
       gap: 10px;
+      position: relative;
     }
 
     button {
@@ -174,6 +212,45 @@
 
     button:hover {
       background-color: #357abd;
+    }
+
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      bottom: 100%;
+      left: 0;
+      background-color: white;
+      min-width: 140px;
+      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: 5px;
+      z-index: 10;
+    }
+
+    .dropdown-content button {
+      color: #333;
+      padding: 10px 14px;
+      text-decoration: none;
+      display: block;
+      width: 100%;
+      text-align: left;
+      background-color: white;
+      border-radius: 0;
+      border-bottom: 1px solid #eee;
+    }
+
+    .dropdown-content button:hover {
+      background-color: #f1f1f1;
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: block;
     }
   </style>
 </head>
@@ -203,12 +280,18 @@
   </div>
 
   <div class="controls">
-    <button id="check-btn">Check Puzzle</button>
+    <div class="dropdown">
+      <button>Check ▼</button>
+      <div class="dropdown-content">
+        <button id="check-square-btn">Check Square</button>
+        <button id="check-word-btn">Check Word</button>
+        <button id="check-puzzle-btn">Check Puzzle</button>
+      </div>
+    </div>
     <button id="reset-btn">Reset</button>
   </div>
 
   <script>
-    // Multi-puzzle Data
     const puzzles = [
       {
         id: "p1",
@@ -303,6 +386,7 @@
     let secondsElapsed = 0;
     let timerInterval = null;
     let userGrid = [];
+    let checkStates = []; // Stores 'correct', 'incorrect', or null for each cell
 
     const gridElement = document.getElementById('grid');
     const acrossCluesElement = document.getElementById('across-clues');
@@ -327,14 +411,13 @@
     function loadPuzzle(puzzle) {
       currentPuzzle = puzzle;
       userGrid = Array(puzzle.size).fill(null).map(() => Array(puzzle.size).fill(''));
+      checkStates = Array(puzzle.size).fill(null).map(() => Array(puzzle.size).fill(null));
       
-      // Reset timer
       clearInterval(timerInterval);
       secondsElapsed = 0;
       timerElement.textContent = "00:00";
       startTimer();
 
-      // Find first non-null cell for selection
       activeRow = 0;
       activeCol = 0;
       while (currentPuzzle.solution[activeRow][activeCol] === null) {
@@ -447,9 +530,13 @@
     function updateHighlighting() {
       const cells = document.querySelectorAll('.cell');
       cells.forEach(cell => {
-        cell.classList.remove('active', 'highlighted');
+        cell.classList.remove('active', 'highlighted', 'correct', 'incorrect');
         const r = parseInt(cell.dataset.row);
         const c = parseInt(cell.dataset.col);
+
+        if (checkStates[r] && checkStates[r][c]) {
+          cell.classList.add(checkStates[r][c]);
+        }
 
         if (r === activeRow && c === activeCol) {
           cell.classList.add('active');
@@ -509,10 +596,12 @@
       else if (e.key === 'ArrowUp') moveSelection(-1, 0);
       else if (e.key === 'Backspace') {
         userGrid[activeRow][activeCol] = '';
+        checkStates[activeRow][activeCol] = null;
         renderBoardValues();
         moveSelectionPrevious();
       } else if (/^[a-zA-Z]$/.test(e.key)) {
         userGrid[activeRow][activeCol] = e.key.toUpperCase();
+        checkStates[activeRow][activeCol] = null; // Clear check state when editing
         renderBoardValues();
         moveSelectionNext();
       }
@@ -566,26 +655,52 @@
           }
         }
       }
+      updateHighlighting();
     }
 
-    document.getElementById('check-btn').addEventListener('click', () => {
-      let correct = true;
+    // CHECK LOGIC
+    function checkCell(r, c) {
+      if (currentPuzzle.solution[r][c] === null || userGrid[r][c] === '') return;
+      if (userGrid[r][c] === currentPuzzle.solution[r][c]) {
+        checkStates[r][c] = 'correct';
+      } else {
+        checkStates[r][c] = 'incorrect';
+      }
+    }
+
+    document.getElementById('check-square-btn').addEventListener('click', () => {
+      checkCell(activeRow, activeCol);
+      updateHighlighting();
+    });
+
+    document.getElementById('check-word-btn').addEventListener('click', () => {
+      for (let r = 0; r < currentPuzzle.size; r++) {
+        for (let c = 0; c < currentPuzzle.size; c++) {
+          if (belongsToActiveWord(r, c)) {
+            checkCell(r, c);
+          }
+        }
+      }
+      updateHighlighting();
+    });
+
+    document.getElementById('check-puzzle-btn').addEventListener('click', () => {
+      let isFullyCorrect = true;
       for (let r = 0; r < currentPuzzle.size; r++) {
         for (let c = 0; c < currentPuzzle.size; c++) {
           if (currentPuzzle.solution[r][c] !== null) {
+            checkCell(r, c);
             if (userGrid[r][c] !== currentPuzzle.solution[r][c]) {
-              correct = false;
-              break;
+              isFullyCorrect = false;
             }
           }
         }
       }
+      updateHighlighting();
 
-      if (correct) {
+      if (isFullyCorrect) {
         clearInterval(timerInterval);
         alert(`Congratulations! You solved "${currentPuzzle.title}" in ${timerElement.textContent}!`);
-      } else {
-        alert("Some letters are incorrect or missing. Keep trying!");
       }
     });
 
@@ -593,7 +708,7 @@
       loadPuzzle(currentPuzzle);
     });
 
-    // Initialize
+    // Initialize App
     initPuzzleSelect();
     loadPuzzle(puzzles[0]);
   </script>
