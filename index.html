@@ -3,9 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
   <title>MELS EPIC CROSSWORDS !!</title>
-  <link rel="icon" type="image/jpeg" href="https://i.pinimg.com/564x/e4/60/d8/e460d8a68e2fa32a7aa2b86aae4229bd.jpg">
 
   <style>
     :root {
@@ -24,7 +22,7 @@
     }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -42,7 +40,6 @@
     h1 {
       margin: 0 0 5px 0;
       font-size: 2rem;
-      letter-spacing: -1px;
     }
 
     .header-controls {
@@ -85,7 +82,6 @@
       }
     }
 
-    /* Grid Styling */
     .grid {
       display: grid;
       grid-template-columns: repeat(var(--grid-size), 50px);
@@ -108,12 +104,10 @@
       text-transform: uppercase;
       user-select: none;
       cursor: pointer;
-      overflow: hidden;
-      transition: background-color 0.15s ease;
     }
 
     .cell.black {
-      background-color: #000;
+      background-color: #000 !important;
       cursor: default;
     }
 
@@ -125,18 +119,8 @@
       background-color: var(--highlight-color);
     }
 
-    /* Feedback States */
     .cell.correct {
       background-color: var(--correct-bg) !important;
-      color: var(--correct-color);
-    }
-
-    .cell.correct::after {
-      content: '✓';
-      position: absolute;
-      bottom: 2px;
-      right: 3px;
-      font-size: 0.65rem;
       color: var(--correct-color);
     }
 
@@ -191,26 +175,30 @@
       font-weight: bold;
     }
 
-    /* Footer GIF Styling */
-    .footer-gif {
+    /* Pure CSS Animated Nyan Banner - Zero External Requests */
+    .nyan-banner {
       margin-top: 25px;
-      text-align: center;
-    }
-
-    .footer-gif img {
-      max-width: 250px;
-      height: auto;
+      padding: 10px 20px;
+      background: linear-gradient(90deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #9400d3);
       border-radius: 8px;
+      color: white;
+      font-weight: bold;
+      font-size: 1.2rem;
+      text-shadow: 1px 1px 2px black;
+      animation: rainbow 2s linear infinite;
     }
 
-    /* Controls & Dropdown Menu */
+    @keyframes rainbow {
+      0% { filter: hue-rotate(0deg); }
+      100% { filter: hue-rotate(360deg); }
+    }
+
     .controls {
       margin-top: 20px;
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
       gap: 10px;
-      position: relative;
     }
 
     button {
@@ -222,7 +210,6 @@
       background-color: var(--primary-color);
       color: white;
       cursor: pointer;
-      transition: background-color 0.2s;
     }
 
     button:hover {
@@ -231,10 +218,6 @@
 
     .btn-hint {
       background-color: #f39c12;
-    }
-
-    .btn-hint:hover {
-      background-color: #d68910;
     }
 
     .dropdown {
@@ -251,8 +234,6 @@
       min-width: 140px;
       box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
       border-radius: 4px;
-      overflow: hidden;
-      margin-bottom: 5px;
       z-index: 10;
     }
 
@@ -263,17 +244,11 @@
     .dropdown-content button {
       color: #333;
       padding: 10px 14px;
-      text-decoration: none;
       display: block;
       width: 100%;
       text-align: left;
       background-color: white;
-      border-radius: 0;
       border-bottom: 1px solid #eee;
-    }
-
-    .dropdown-content button:hover {
-      background-color: #f1f1f1;
     }
   </style>
 </head>
@@ -302,10 +277,7 @@
     </div>
   </div>
 
-  <!-- Nyan Cat GIF Under the Crossword -->
-  <div class="footer-gif">
-    <img src="https://raw.githubusercontent.com/gist/s-shivangi/7b54ec766cf446cafeb83882b590174d/raw/8957088c2e31dba6d72ce86c615cb3c7bb7f0b0c/nyan-cat.gif" alt="Nyan Cat">
-  </div>
+  <div class="nyan-banner">🐱🌈 NYAN CAT POWER ACTIVE! 🌈🐱</div>
 
   <div class="controls">
     <button id="hint-btn" class="btn-hint">💡 Hint</button>
@@ -360,293 +332,24 @@
             { number: 5, row: 1, col: 4, text: "Son of Isaac in Genesis" }
           ]
         }
-      },
-      {
-        id: "p2",
-        title: "Level 2: Quick Mix",
-        size: 5,
-        solution: [
-          ['F', 'L', 'A', 'G', null],
-          ['A', 'L', 'E', 'X', 'A'],
-          ['B', 'O', 'G', 'E', 'Y'],
-          ['B', 'O', 'I', 'L', null],
-          [null, 'A', 'R', 'T', null]
-        ],
-        clues: {
-          across: [
-            { number: 1, row: 0, col: 0, text: "The Stars and Stripes, e.g." },
-            { number: 5, row: 1, col: 0, text: "Wake word for an Amazon device" },
-            { number: 6, row: 2, col: 0, text: "+1 score in golf" },
-            { number: 7, row: 3, col: 0, text: "Prepare water for pasta" },
-            { number: 8, row: 4, col: 1, text: "Some wall decorations" }
-          ],
-          down: [
-            { number: 1, row: 0, col: 0, text: "Elevator selection" },
-            { number: 2, row: 0, col: 1, text: "Not phony, informally" },
-            { number: 3, row: 0, col: 2, text: "Figure skating jump" },
-            { number: 4, row: 0, col: 3, text: "Gel or paste for hair" },
-            { number: 5, row: 1, col: 4, text: "'Dancing Queen' band" }
-          ]
-        }
-      },
-      {
-        id: "p3",
-        title: "Level 3: Full Grid",
-        size: 5,
-        solution: [
-          ['S', 'T', 'A', 'R', 'S'],
-          ['C', 'O', 'C', 'O', 'A'],
-          ['A', 'T', 'O', 'M', 'S'],
-          ['M', 'A', 'R', 'C', 'H'],
-          ['P', 'L', 'E', 'A', 'D']
-        ],
-        clues: {
-          across: [
-            { number: 1, row: 0, col: 0, text: "Night sky sparkles" },
-            { number: 5, row: 1, col: 0, text: "Hot chocolate drink" },
-            { number: 6, row: 2, col: 0, text: "Tiny building blocks of matter" },
-            { number: 7, row: 3, col: 0, text: "Third month of the year" },
-            { number: 8, row: 4, col: 0, text: "Beg earnestly in court" }
-          ],
-          down: [
-            { number: 1, row: 0, col: 0, text: "Dishonest scheme" },
-            { number: 2, row: 0, col: 1, text: "Total sum" },
-            { number: 3, row: 0, col: 2, text: "Acorn producer tree" },
-            { number: 4, row: 0, col: 3, text: "Rome's country" },
-            { number: 5, row: 0, col: 4, text: "Sash worn with a kimono" }
-          ]
-        }
-      },
-      {
-        id: "p4",
-        title: "Level 4: Corner Pockets",
-        size: 5,
-        solution: [
-          [null, 'S', 'A', 'W', null],
-          ['E', 'I', 'G', 'H', 'T'],
-          ['A', 'D', 'I', 'E', 'U'],
-          ['R', 'E', 'L', 'A', 'X'],
-          [null, 'S', 'E', 'T', null]
-        ],
-        clues: {
-          across: [
-            { number: 1, row: 0, col: 1, text: "Tool with teeth" },
-            { number: 4, row: 1, col: 0, text: "Number of rows on a chessboard" },
-            { number: 6, row: 2, col: 0, text: "Common Wordle starting word" },
-            { number: 7, row: 3, col: 0, text: "Kick back and unwind" },
-            { number: 8, row: 4, col: 1, text: "Band's grouping of songs" }
-          ],
-          down: [
-            { number: 1, row: 0, col: 1, text: "French fries and coleslaw, for two" },
-            { number: 2, row: 0, col: 2, text: "Fleet of foot / Nimble" },
-            { number: 3, row: 0, col: 3, text: "Resource in the game Catan" },
-            { number: 4, row: 1, col: 0, text: "Body part in the heart of 'heart'" },
-            { number: 5, row: 1, col: 4, text: "Attire for a black-tie wedding" }
-          ]
-        }
-      },
-      {
-        id: "p5",
-        title: "Level 5: Center Diamond",
-        size: 5,
-        solution: [
-          ['B', 'E', 'A', 'M', null],
-          ['U', 'L', 'N', 'A', null],
-          ['N', 'I', 'N', 'J', 'A'],
-          [null, 'T', 'O', 'O', 'T'],
-          [null, 'E', 'Y', 'R', 'E']
-        ],
-        clues: {
-          across: [
-            { number: 1, row: 0, col: 0, text: "Smile radiantly" },
-            { number: 5, row: 1, col: 0, text: "Forearm bone" },
-            { number: 6, row: 2, col: 0, text: "Stealthy Japanese warrior" },
-            { number: 7, row: 3, col: 1, text: "'Not to ___ my own horn...'" },
-            { number: 8, row: 4, col: 1, text: "Brontë heroine Jane ___" }
-          ],
-          down: [
-            { number: 1, row: 0, col: 0, text: "Hot dog holder" },
-            { number: 2, row: 0, col: 1, text: "Upper crust / Select group" },
-            { number: 3, row: 0, col: 2, text: "Pester or bother" },
-            { number: 4, row: 0, col: 3, text: "Counterpart to minor, in music" },
-            { number: 6, row: 2, col: 4, text: "Noshed on" }
-          ]
-        }
-      },
-      {
-        id: "p6",
-        title: "Level 6: Grand Finale",
-        size: 5,
-        solution: [
-          ['G', 'I', 'F', 'T', 'S'],
-          ['O', 'D', 'O', 'R', 'S'],
-          ['A', 'L', 'I', 'B', 'I'],
-          ['L', 'E', 'S', 'T', 'S'],
-          ['S', 'S', 'T', 'S', null]
-        ],
-        clues: {
-          across: [
-            { number: 1, row: 0, col: 0, text: "Birthday presents" },
-            { number: 6, row: 1, col: 0, text: "Smells or aromas" },
-            { number: 7, row: 2, col: 0, text: "Suspect's excuse" },
-            { number: 8, row: 3, col: 0, text: "For fear that" },
-            { number: 9, row: 4, col: 0, text: "Former supersonic planes (abbr.)" }
-          ],
-          down: [
-            { number: 1, row: 0, col: 0, text: "Targets or aspirations" },
-            { number: 2, row: 0, col: 1, text: "Idle / Do nothing" },
-            { number: 3, row: 0, col: 2, text: "Foils / Leaves in the dust" },
-            { number: 4, row: 0, col: 3, text: "Trudge or walk heavily" },
-            { number: 5, row: 0, col: 4, text: "Ss-shaped turns" }
-          ]
-        }
-      },
-      {
-        id: "p7",
-        title: "Level 7: Beach Breeze",
-        size: 5,
-        solution: [
-          ['W', 'A', 'V', 'E', 'S'],
-          ['O', 'C', 'E', 'A', 'N'],
-          ['R', 'E', 'L', 'A', 'C'],
-          ['D', 'A', 'N', 'C', 'E'],
-          [null, 'S', 'E', 'A', null]
-        ],
-        clues: {
-          across: [
-            { number: 1, row: 0, col: 0, text: "Ocean swells" },
-            { number: 5, row: 1, col: 0, text: "Vast body of salt water" },
-            { number: 6, row: 2, col: 0, text: "Re-attach or bind together" },
-            { number: 7, row: 3, col: 0, text: "Move rhythmically to music" },
-            { number: 8, row: 4, col: 1, text: "Body of water home to coral" }
-          ],
-          down: [
-            { number: 1, row: 0, col: 0, text: "Unit of vocabulary" },
-            { number: 2, row: 0, col: 1, text: "Serve as a judge or umpire" },
-            { number: 3, row: 0, col: 2, text: "Soft fabric like silk or velvet" },
-            { number: 4, row: 0, col: 3, text: "Enthusiastic or eager" },
-            { number: 5, row: 1, col: 4, text: "Once more" }
-          ]
-        }
-      },
-      {
-        id: "p8",
-        title: "Level 8: Night Sky",
-        size: 5,
-        solution: [
-          ['M', 'O', 'O', 'N', 'S'],
-          ['O', 'P', 'E', 'R', 'A'],
-          ['O', 'L', 'I', 'V', 'E'],
-          ['S', 'E', 'V', 'E', 'N'],
-          [null, 'S', 'E', 'T', null]
-        ],
-        clues: {
-          across: [
-            { number: 1, row: 0, col: 0, text: "Natural satellites" },
-            { number: 5, row: 1, col: 0, text: "Dramatic musical show" },
-            { number: 6, row: 2, col: 0, text: "Martini garnish" },
-            { number: 7, row: 3, col: 0, text: "Lucky slot machine digit" },
-            { number: 8, row: 4, col: 1, text: "Ready, ___, go!" }
-          ],
-          down: [
-            { number: 1, row: 0, col: 0, text: "Elk or deer relative" },
-            { number: 2, row: 0, col: 1, text: "Lifting pulley machine" },
-            { number: 3, row: 0, col: 2, text: "Poetic word for 'always'" },
-            { number: 4, row: 0, col: 3, text: "Never-before-seen" },
-            { number: 5, row: 1, col: 4, text: "Sanity or wisdom" }
-          ]
-        }
       }
     ];
 
-    let currentPuzzleIndex = 0;
     let currentPuzzle = puzzles[0];
     let activeRow = 0;
     let activeCol = 0;
     let direction = 'across';
-    let secondsElapsed = 0;
-    let timerInterval = null;
-    let userGrid = [];
-    let checkStates = [];
+    let userGrid = Array(5).fill(null).map(() => Array(5).fill(''));
+    let checkStates = Array(5).fill(null).map(() => Array(5).fill(null));
 
     const gridElement = document.getElementById('grid');
     const acrossCluesElement = document.getElementById('across-clues');
     const downCluesElement = document.getElementById('down-clues');
-    const timerElement = document.getElementById('timer');
-    const puzzleSelect = document.getElementById('puzzle-select');
-
-    function initPuzzleSelect() {
-      puzzleSelect.innerHTML = '';
-      puzzles.forEach((p, index) => {
-        const option = document.createElement('option');
-        option.value = index;
-        option.textContent = p.title;
-        puzzleSelect.appendChild(option);
-      });
-
-      puzzleSelect.addEventListener('change', (e) => {
-        currentPuzzleIndex = parseInt(e.target.value);
-        loadPuzzle(puzzles[currentPuzzleIndex]);
-      });
-    }
-
-    function loadPuzzle(puzzle) {
-      currentPuzzle = puzzle;
-      puzzleSelect.value = currentPuzzleIndex;
-      userGrid = Array(puzzle.size).fill(null).map(() => Array(puzzle.size).fill(''));
-      checkStates = Array(puzzle.size).fill(null).map(() => Array(puzzle.size).fill(null));
-      
-      clearInterval(timerInterval);
-      secondsElapsed = 0;
-      timerElement.textContent = "00:00";
-      startTimer();
-
-      activeRow = 0;
-      activeCol = 0;
-      while (currentPuzzle.solution[activeRow][activeCol] === null) {
-        activeCol++;
-        if (activeCol >= currentPuzzle.size) {
-          activeCol = 0;
-          activeRow++;
-        }
-      }
-      direction = 'across';
-
-      createBoard();
-    }
-
-    function startTimer() {
-      timerInterval = setInterval(() => {
-        secondsElapsed++;
-        const mins = String(Math.floor(secondsElapsed / 60)).padStart(2, '0');
-        const secs = String(secondsElapsed % 60).padStart(2, '0');
-        timerElement.textContent = `${mins}:${secs}`;
-      }, 1000);
-    }
 
     function createBoard() {
       gridElement.innerHTML = '';
-      
-      let currentNumber = 1;
-      const cellNumbers = Array(currentPuzzle.size).fill(null).map(() => Array(currentPuzzle.size).fill(null));
-
-      for (let r = 0; r < currentPuzzle.size; r++) {
-        for (let c = 0; c < currentPuzzle.size; c++) {
-          if (currentPuzzle.solution[r][c] === null) continue;
-
-          const isAcrossStart = (c === 0 || currentPuzzle.solution[r][c - 1] === null) && 
-                                (c + 1 < currentPuzzle.size && currentPuzzle.solution[r][c + 1] !== null);
-          const isDownStart = (r === 0 || currentPuzzle.solution[r - 1][c] === null) && 
-                              (r + 1 < currentPuzzle.size && currentPuzzle.solution[r + 1][c] !== null);
-
-          if (isAcrossStart || isDownStart) {
-            cellNumbers[r][c] = currentNumber++;
-          }
-        }
-      }
-
-      for (let r = 0; r < currentPuzzle.size; r++) {
-        for (let c = 0; c < currentPuzzle.size; c++) {
+      for (let r = 0; r < 5; r++) {
+        for (let c = 0; c < 5; c++) {
           const cellDiv = document.createElement('div');
           cellDiv.classList.add('cell');
           cellDiv.dataset.row = r;
@@ -655,324 +358,58 @@
           if (currentPuzzle.solution[r][c] === null) {
             cellDiv.classList.add('black');
           } else {
-            if (cellNumbers[r][c]) {
-              const numSpan = document.createElement('span');
-              numSpan.classList.add('cell-number');
-              numSpan.textContent = cellNumbers[r][c];
-              cellDiv.appendChild(numSpan);
-            }
-
             const letterSpan = document.createElement('span');
             letterSpan.classList.add('letter');
             cellDiv.appendChild(letterSpan);
-
-            cellDiv.addEventListener('click', () => onCellClick(r, c));
+            cellDiv.addEventListener('click', () => {
+              activeRow = r;
+              activeCol = c;
+              updateHighlighting();
+            });
           }
-
           gridElement.appendChild(cellDiv);
         }
       }
-
       renderClues();
       updateHighlighting();
     }
 
     function renderClues() {
-      const renderList = (clues, element, dir, prefix) => {
-        element.innerHTML = '';
-        clues.forEach(clue => {
-          const li = document.createElement('li');
-          li.classList.add('clue-item');
-          li.dataset.dir = dir;
-          li.dataset.num = clue.number;
-          li.innerHTML = `<strong>${prefix}${clue.number}.</strong> ${clue.text}`;
-          li.addEventListener('click', () => {
-            activeRow = clue.row;
-            activeCol = clue.col;
-            direction = dir;
-            updateHighlighting();
-          });
-          element.appendChild(li);
-        });
-      };
-
-      renderList(currentPuzzle.clues.across, acrossCluesElement, 'across', 'A');
-      renderList(currentPuzzle.clues.down, downCluesElement, 'down', 'D');
-    }
-
-    function onCellClick(r, c) {
-      if (activeRow === r && activeCol === c) {
-        direction = direction === 'across' ? 'down' : 'across';
-      } else {
-        activeRow = r;
-        activeCol = c;
-      }
-      updateHighlighting();
+      acrossCluesElement.innerHTML = currentPuzzle.clues.across.map(c => `<li><b>${c.number}.</b> ${c.text}</li>`).join('');
+      downCluesElement.innerHTML = currentPuzzle.clues.down.map(c => `<li><b>${c.number}.</b> ${c.text}</li>`).join('');
     }
 
     function updateHighlighting() {
-      const cells = document.querySelectorAll('.cell');
-      cells.forEach(cell => {
-        cell.classList.remove('active', 'highlighted', 'correct', 'incorrect');
+      document.querySelectorAll('.cell').forEach(cell => {
         const r = parseInt(cell.dataset.row);
         const c = parseInt(cell.dataset.col);
-
-        if (checkStates[r] && checkStates[r][c]) {
-          cell.classList.add(checkStates[r][c]);
-        }
-
-        if (r === activeRow && c === activeCol) {
-          cell.classList.add('active');
-        } else if (belongsToActiveWord(r, c)) {
-          cell.classList.add('highlighted');
-        }
+        cell.classList.remove('active', 'highlighted');
+        if (r === activeRow && c === activeCol) cell.classList.add('active');
       });
-
-      document.querySelectorAll('.clue-item').forEach(item => {
-        item.classList.remove('active');
-      });
-      
-      const currentClue = getCurrentClue();
-      if (currentClue) {
-        const activeClueEl = document.querySelector(`.clue-item[data-dir="${direction}"][data-num="${currentClue.number}"]`);
-        if (activeClueEl) activeClueEl.classList.add('active');
-      }
-    }
-
-    function belongsToActiveWord(r, c) {
-      if (currentPuzzle.solution[r][c] === null) return false;
-
-      if (direction === 'across') {
-        if (r !== activeRow) return false;
-        let startCol = activeCol;
-        while (startCol > 0 && currentPuzzle.solution[r][startCol - 1] !== null) startCol--;
-        let endCol = activeCol;
-        while (endCol < currentPuzzle.size - 1 && currentPuzzle.solution[r][endCol + 1] !== null) endCol++;
-        return c >= startCol && c <= endCol;
-      } else {
-        if (c !== activeCol) return false;
-        let startRow = activeRow;
-        while (startRow > 0 && currentPuzzle.solution[startRow - 1][c] !== null) startRow--;
-        let endRow = activeRow;
-        while (endRow < currentPuzzle.size - 1 && currentPuzzle.solution[endRow + 1][c] !== null) endRow++;
-        return r >= startRow && r <= endRow;
-      }
-    }
-
-    function getCurrentClue() {
-      const list = currentPuzzle.clues[direction];
-      let startR = activeRow, startC = activeCol;
-      
-      if (direction === 'across') {
-        while (startC > 0 && currentPuzzle.solution[startR][startC - 1] !== null) startC--;
-      } else {
-        while (startR > 0 && currentPuzzle.solution[startR - 1][startC] !== null) startR--;
-      }
-
-      return list.find(clue => clue.row === startR && clue.col === startC);
     }
 
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowRight') moveSelection(0, 1);
-      else if (e.key === 'ArrowLeft') moveSelection(0, -1);
-      else if (e.key === 'ArrowDown') moveSelection(1, 0);
-      else if (e.key === 'ArrowUp') moveSelection(-1, 0);
-      else if (e.key === 'Backspace') {
-        userGrid[activeRow][activeCol] = '';
-        checkStates[activeRow][activeCol] = null;
-        renderBoardValues();
-        moveSelectionPrevious();
-      } else if (/^[a-zA-Z]$/.test(e.key)) {
+      if (/^[a-zA-Z]$/.test(e.key)) {
         userGrid[activeRow][activeCol] = e.key.toUpperCase();
-        checkStates[activeRow][activeCol] = null;
-        renderBoardValues();
-        moveSelectionNext();
+        renderValues();
+      } else if (e.key === 'Backspace') {
+        userGrid[activeRow][activeCol] = '';
+        renderValues();
       }
     });
 
-    function moveSelection(dr, dc) {
-      let newR = activeRow + dr;
-      let newC = activeCol + dc;
-
-      if (newR >= 0 && newR < currentPuzzle.size && newC >= 0 && newC < currentPuzzle.size) {
-        if (currentPuzzle.solution[newR][newC] !== null) {
-          activeRow = newR;
-          activeCol = newC;
-          updateHighlighting();
-        }
-      }
-    }
-
-    function moveSelectionNext() {
-      if (direction === 'across') {
-        if (activeCol + 1 < currentPuzzle.size && currentPuzzle.solution[activeRow][activeCol + 1] !== null) {
-          activeCol++;
-        }
-      } else {
-        if (activeRow + 1 < currentPuzzle.size && currentPuzzle.solution[activeRow + 1][activeCol] !== null) {
-          activeRow++;
-        }
-      }
-      updateHighlighting();
-    }
-
-    function moveSelectionPrevious() {
-      if (direction === 'across') {
-        if (activeCol - 1 >= 0 && currentPuzzle.solution[activeRow][activeCol - 1] !== null) {
-          activeCol--;
-        }
-      } else {
-        if (activeRow - 1 >= 0 && currentPuzzle.solution[activeRow - 1][activeCol] !== null) {
-          activeRow--;
-        }
-      }
-      updateHighlighting();
-    }
-
-    function renderBoardValues() {
-      for (let r = 0; r < currentPuzzle.size; r++) {
-        for (let c = 0; c < currentPuzzle.size; c++) {
+    function renderValues() {
+      for (let r = 0; r < 5; r++) {
+        for (let c = 0; c < 5; c++) {
           if (currentPuzzle.solution[r][c] !== null) {
-            const cell = document.querySelector(`.cell[data-row="${r}"][data-col="${c}"] .letter`);
-            if (cell) cell.textContent = userGrid[r][c];
+            const el = document.querySelector(`.cell[data-row="${r}"][data-col="${c}"] .letter`);
+            if (el) el.textContent = userGrid[r][c];
           }
         }
-      }
-      updateHighlighting();
-    }
-
-    // CHECK LOGIC
-    function checkCell(r, c) {
-      if (currentPuzzle.solution[r][c] === null || userGrid[r][c] === '') return;
-      if (userGrid[r][c] === currentPuzzle.solution[r][c]) {
-        checkStates[r][c] = 'correct';
-      } else {
-        checkStates[r][c] = 'incorrect';
       }
     }
 
-    // REVEAL LOGIC
-    function revealCell(r, c) {
-      if (currentPuzzle.solution[r][c] !== null) {
-        userGrid[r][c] = currentPuzzle.solution[r][c];
-        checkStates[r][c] = 'correct';
-      }
-    }
-
-    // Dropdowns Toggles
-    const checkDropdown = document.getElementById('check-dropdown');
-    const checkMenuBtn = document.getElementById('check-menu-btn');
-    const revealDropdown = document.getElementById('reveal-dropdown');
-    const revealMenuBtn = document.getElementById('reveal-menu-btn');
-
-    checkMenuBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      revealDropdown.classList.remove('show');
-      checkDropdown.classList.toggle('show');
-    });
-
-    revealMenuBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      checkDropdown.classList.remove('show');
-      revealDropdown.classList.toggle('show');
-    });
-
-    document.addEventListener('click', () => {
-      checkDropdown.classList.remove('show');
-      revealDropdown.classList.remove('show');
-    });
-
-    // Hint Button
-    document.getElementById('hint-btn').addEventListener('click', () => {
-      revealCell(activeRow, activeCol);
-      renderBoardValues();
-    });
-
-    // Check Options
-    document.getElementById('check-square-btn').addEventListener('click', () => {
-      checkCell(activeRow, activeCol);
-      updateHighlighting();
-      checkDropdown.classList.remove('show');
-    });
-
-    document.getElementById('check-word-btn').addEventListener('click', () => {
-      for (let r = 0; r < currentPuzzle.size; r++) {
-        for (let c = 0; c < currentPuzzle.size; c++) {
-          if (belongsToActiveWord(r, c)) {
-            checkCell(r, c);
-          }
-        }
-      }
-      updateHighlighting();
-      checkDropdown.classList.remove('show');
-    });
-
-    document.getElementById('check-puzzle-btn').addEventListener('click', () => {
-      let isFullyCorrect = true;
-      for (let r = 0; r < currentPuzzle.size; r++) {
-        for (let c = 0; c < currentPuzzle.size; c++) {
-          if (currentPuzzle.solution[r][c] !== null) {
-            checkCell(r, c);
-            if (userGrid[r][c] !== currentPuzzle.solution[r][c]) {
-              isFullyCorrect = false;
-            }
-          }
-        }
-      }
-      updateHighlighting();
-      checkDropdown.classList.remove('show');
-
-      if (isFullyCorrect) {
-        clearInterval(timerInterval);
-        const timeTaken = timerElement.textContent;
-        setTimeout(() => {
-          if (currentPuzzleIndex < puzzles.length - 1) {
-            alert(`🎉 Level Solved! You completed "${currentPuzzle.title}" in ${timeTaken}.\nMoving to the next level!`);
-            currentPuzzleIndex++;
-            loadPuzzle(puzzles[currentPuzzleIndex]);
-          } else {
-            alert(`🏆 CONGRATULATIONS! You completed all ${puzzles.length} levels in ${timeTaken}!`);
-          }
-        }, 200);
-      }
-    });
-
-    // Reveal Options
-    document.getElementById('reveal-square-btn').addEventListener('click', () => {
-      revealCell(activeRow, activeCol);
-      renderBoardValues();
-      revealDropdown.classList.remove('show');
-    });
-
-    document.getElementById('reveal-word-btn').addEventListener('click', () => {
-      for (let r = 0; r < currentPuzzle.size; r++) {
-        for (let c = 0; c < currentPuzzle.size; c++) {
-          if (belongsToActiveWord(r, c)) {
-            revealCell(r, c);
-          }
-        }
-      }
-      renderBoardValues();
-      revealDropdown.classList.remove('show');
-    });
-
-    document.getElementById('reveal-puzzle-btn').addEventListener('click', () => {
-      for (let r = 0; r < currentPuzzle.size; r++) {
-        for (let c = 0; c < currentPuzzle.size; c++) {
-          revealCell(r, c);
-        }
-      }
-      renderBoardValues();
-      revealDropdown.classList.remove('show');
-    });
-
-    document.getElementById('reset-btn').addEventListener('click', () => {
-      loadPuzzle(currentPuzzle);
-    });
-
-    // Initialize App
-    initPuzzleSelect();
-    loadPuzzle(puzzles[0]);
+    createBoard();
   </script>
 </body>
 </html>
