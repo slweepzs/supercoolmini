@@ -194,7 +194,7 @@
       font-weight: bold;
     }
 
-    /* Controls & Click-Triggered Dropdown */
+    /* Controls & Dropdown Menu */
     .controls {
       margin-top: 20px;
       display: flex;
@@ -299,7 +299,7 @@
     const puzzles = [
       {
         id: "p1",
-        title: "Puzzle #1: Animal Kingdom",
+        title: "Level 1: Animal Kingdom",
         size: 5,
         solution: [
           ['C', 'A', 'T', 'S', null],
@@ -327,7 +327,7 @@
       },
       {
         id: "p2",
-        title: "Puzzle #2: Quick Mix",
+        title: "Level 2: Quick Mix",
         size: 5,
         solution: [
           ['F', 'L', 'A', 'G', null],
@@ -355,7 +355,7 @@
       },
       {
         id: "p3",
-        title: "Puzzle #3: Easy Breezy",
+        title: "Level 3: Full Grid",
         size: 5,
         solution: [
           ['S', 'T', 'A', 'R', 'S'],
@@ -380,9 +380,94 @@
             { number: 5, row: 0, col: 4, text: "Sash worn with a kimono" }
           ]
         }
+      },
+      {
+        id: "p4",
+        title: "Level 4: Corner Pockets",
+        size: 5,
+        solution: [
+          [null, 'S', 'A', 'W', null],
+          ['E', 'I', 'G', 'H', 'T'],
+          ['A', 'D', 'I', 'E', 'U'],
+          ['R', 'E', 'L', 'A', 'X'],
+          [null, 'S', 'E', 'T', null]
+        ],
+        clues: {
+          across: [
+            { number: 1, row: 0, col: 1, text: "Tool with teeth" },
+            { number: 4, row: 1, col: 0, text: "Number of rows on a chessboard" },
+            { number: 6, row: 2, col: 0, text: "Common Wordle starting word" },
+            { number: 7, row: 3, col: 0, text: "Kick back and unwind" },
+            { number: 8, row: 4, col: 1, text: "Band's grouping of songs" }
+          ],
+          down: [
+            { number: 1, row: 0, col: 1, text: "French fries and coleslaw, for two" },
+            { number: 2, row: 0, col: 2, text: "Fleet of foot / Nimble" },
+            { number: 3, row: 0, col: 3, text: "Resource in the game Catan" },
+            { number: 4, row: 1, col: 0, text: "Body part in the heart of 'heart'" },
+            { number: 5, row: 1, col: 4, text: "Attire for a black-tie wedding" }
+          ]
+        }
+      },
+      {
+        id: "p5",
+        title: "Level 5: Center Diamond",
+        size: 5,
+        solution: [
+          ['B', 'E', 'A', 'M', null],
+          ['U', 'L', 'N', 'A', null],
+          ['N', 'I', 'N', 'J', 'A'],
+          [null, 'T', 'O', 'O', 'T'],
+          [null, 'E', 'Y', 'R', 'E']
+        ],
+        clues: {
+          across: [
+            { number: 1, row: 0, col: 0, text: "Smile radiantly" },
+            { number: 5, row: 1, col: 0, text: "Forearm bone" },
+            { number: 6, row: 2, col: 0, text: "Stealthy Japanese warrior" },
+            { number: 7, row: 3, col: 1, text: "'Not to ___ my own horn...'" },
+            { number: 8, row: 4, col: 1, text: "Brontë heroine Jane ___" }
+          ],
+          down: [
+            { number: 1, row: 0, col: 0, text: "Hot dog holder" },
+            { number: 2, row: 0, col: 1, text: "Upper crust / Select group" },
+            { number: 3, row: 0, col: 2, text: "Pester or bother" },
+            { number: 4, row: 0, col: 3, text: "Counterpart to minor, in music" },
+            { number: 6, row: 2, col: 4, text: "Noshed on" }
+          ]
+        }
+      },
+      {
+        id: "p6",
+        title: "Level 6: Grand Finale",
+        size: 5,
+        solution: [
+          ['G', 'I', 'F', 'T', 'S'],
+          ['O', 'D', 'O', 'R', 'S'],
+          ['A', 'L', 'I', 'B', 'I'],
+          ['L', 'E', 'S', 'T', 'S'],
+          ['S', 'S', 'T', 'S', null]
+        ],
+        clues: {
+          across: [
+            { number: 1, row: 0, col: 0, text: "Birthday presents" },
+            { number: 6, row: 1, col: 0, text: "Smells or aromas" },
+            { number: 7, row: 2, col: 0, text: "Suspect's excuse" },
+            { number: 8, row: 3, col: 0, text: "For fear that" },
+            { number: 9, row: 4, col: 0, text: "Former supersonic planes (abbr.)" }
+          ],
+          down: [
+            { number: 1, row: 0, col: 0, text: "Targets or aspirations" },
+            { number: 2, row: 0, col: 1, text: "Idle / Do nothing" },
+            { number: 3, row: 0, col: 2, text: "Foils / Leaves in the dust" },
+            { number: 4, row: 0, col: 3, text: "Trudge or walk heavily" },
+            { number: 5, row: 0, col: 4, text: "Ss-shaped turns" }
+          ]
+        }
       }
     ];
 
+    let currentPuzzleIndex = 0;
     let currentPuzzle = puzzles[0];
     let activeRow = 0;
     let activeCol = 0;
@@ -408,12 +493,14 @@
       });
 
       puzzleSelect.addEventListener('change', (e) => {
-        loadPuzzle(puzzles[e.target.value]);
+        currentPuzzleIndex = parseInt(e.target.value);
+        loadPuzzle(puzzles[currentPuzzleIndex]);
       });
     }
 
     function loadPuzzle(puzzle) {
       currentPuzzle = puzzle;
+      puzzleSelect.value = currentPuzzleIndex;
       userGrid = Array(puzzle.size).fill(null).map(() => Array(puzzle.size).fill(''));
       checkStates = Array(puzzle.size).fill(null).map(() => Array(puzzle.size).fill(null));
       
@@ -601,4 +688,149 @@
       if (e.key === 'ArrowRight') moveSelection(0, 1);
       else if (e.key === 'ArrowLeft') moveSelection(0, -1);
       else if (e.key === 'ArrowDown') moveSelection(1, 0);
-      else if (e.key ===
+      else if (e.key === 'ArrowUp') moveSelection(-1, 0);
+      else if (e.key === 'Backspace') {
+        userGrid[activeRow][activeCol] = '';
+        checkStates[activeRow][activeCol] = null;
+        renderBoardValues();
+        moveSelectionPrevious();
+      } else if (/^[a-zA-Z]$/.test(e.key)) {
+        userGrid[activeRow][activeCol] = e.key.toUpperCase();
+        checkStates[activeRow][activeCol] = null;
+        renderBoardValues();
+        moveSelectionNext();
+      }
+    });
+
+    function moveSelection(dr, dc) {
+      let newR = activeRow + dr;
+      let newC = activeCol + dc;
+
+      if (newR >= 0 && newR < currentPuzzle.size && newC >= 0 && newC < currentPuzzle.size) {
+        if (currentPuzzle.solution[newR][newC] !== null) {
+          activeRow = newR;
+          activeCol = newC;
+          updateHighlighting();
+        }
+      }
+    }
+
+    function moveSelectionNext() {
+      if (direction === 'across') {
+        if (activeCol + 1 < currentPuzzle.size && currentPuzzle.solution[activeRow][activeCol + 1] !== null) {
+          activeCol++;
+        }
+      } else {
+        if (activeRow + 1 < currentPuzzle.size && currentPuzzle.solution[activeRow + 1][activeCol] !== null) {
+          activeRow++;
+        }
+      }
+      updateHighlighting();
+    }
+
+    function moveSelectionPrevious() {
+      if (direction === 'across') {
+        if (activeCol - 1 >= 0 && currentPuzzle.solution[activeRow][activeCol - 1] !== null) {
+          activeCol--;
+        }
+      } else {
+        if (activeRow - 1 >= 0 && currentPuzzle.solution[activeRow - 1][activeCol] !== null) {
+          activeRow--;
+        }
+      }
+      updateHighlighting();
+    }
+
+    function renderBoardValues() {
+      for (let r = 0; r < currentPuzzle.size; r++) {
+        for (let c = 0; c < currentPuzzle.size; c++) {
+          if (currentPuzzle.solution[r][c] !== null) {
+            const cell = document.querySelector(`.cell[data-row="${r}"][data-col="${c}"] .letter`);
+            if (cell) cell.textContent = userGrid[r][c];
+          }
+        }
+      }
+      updateHighlighting();
+    }
+
+    // CHECK LOGIC
+    function checkCell(r, c) {
+      if (currentPuzzle.solution[r][c] === null || userGrid[r][c] === '') return;
+      if (userGrid[r][c] === currentPuzzle.solution[r][c]) {
+        checkStates[r][c] = 'correct';
+      } else {
+        checkStates[r][c] = 'incorrect';
+      }
+    }
+
+    // Toggle Dropdown Menu
+    const checkDropdown = document.getElementById('check-dropdown');
+    const checkMenuBtn = document.getElementById('check-menu-btn');
+
+    checkMenuBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      checkDropdown.classList.toggle('show');
+    });
+
+    document.addEventListener('click', () => {
+      checkDropdown.classList.remove('show');
+    });
+
+    document.getElementById('check-square-btn').addEventListener('click', () => {
+      checkCell(activeRow, activeCol);
+      updateHighlighting();
+      checkDropdown.classList.remove('show');
+    });
+
+    document.getElementById('check-word-btn').addEventListener('click', () => {
+      for (let r = 0; r < currentPuzzle.size; r++) {
+        for (let c = 0; c < currentPuzzle.size; c++) {
+          if (belongsToActiveWord(r, c)) {
+            checkCell(r, c);
+          }
+        }
+      }
+      updateHighlighting();
+      checkDropdown.classList.remove('show');
+    });
+
+    document.getElementById('check-puzzle-btn').addEventListener('click', () => {
+      let isFullyCorrect = true;
+      for (let r = 0; r < currentPuzzle.size; r++) {
+        for (let c = 0; c < currentPuzzle.size; c++) {
+          if (currentPuzzle.solution[r][c] !== null) {
+            checkCell(r, c);
+            if (userGrid[r][c] !== currentPuzzle.solution[r][c]) {
+              isFullyCorrect = false;
+            }
+          }
+        }
+      }
+      updateHighlighting();
+      checkDropdown.classList.remove('show');
+
+      if (isFullyCorrect) {
+        clearInterval(timerInterval);
+        const timeTaken = timerElement.textContent;
+        setTimeout(() => {
+          if (currentPuzzleIndex < puzzles.length - 1) {
+            alert(`🎉 Level Solved! You completed "${currentPuzzle.title}" in ${timeTaken}.\nMoving to the next level!`);
+            currentPuzzleIndex++;
+            loadPuzzle(puzzles[currentPuzzleIndex]);
+          } else {
+            alert(`🏆 CONGRATULATIONS! You completed all ${puzzles.length} levels in ${timeTaken}!`);
+          }
+        }, 200);
+      }
+    });
+
+    document.getElementById('reset-btn').addEventListener('click', () => {
+      loadPuzzle(currentPuzzle);
+    });
+
+    // Initialize App
+    initPuzzleSelect();
+    loadPuzzle(puzzles[0]);
+  </script>
+</body>
+</html>
